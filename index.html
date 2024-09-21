@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f8f9fa;
         }
 
         .dashboard {
@@ -32,6 +33,7 @@
         .nav-link {
             color: #337ab7;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .nav-link.active {
@@ -64,6 +66,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         .add-btn:hover {
@@ -83,35 +86,6 @@
         .todo-item.complete {
             background-color: #f0f0f0;
             text-decoration: line-through;
-        }
-
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #fff;
-            padding: 10px;
-            border: 1px solid #ddd;
-            z-index: 1;
-        }
-
-        .dropdown-content a {
-            color: #337ab7;
-            text-decoration: none;
-            display: block;
-            padding: 10px;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f0f0f0;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
         }
 
         #no-tasks {
@@ -135,20 +109,75 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         .home-link:hover, .todo-list-link:hover {
             background-color: #23527c;
         }
 
-        .home-page {
+        .home-page, .whats-new-page, .tech-updates-page, .profile-page, .settings-page, .login-page {
             display: none;
             padding: 20px;
             text-align: center;
         }
 
-        #schedule-dialog {
-            display: none;
+        .home-page h2 {
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+
+        .home-page button {
+            background-color: #337ab7;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        .home-page button:hover {
+            background-color: #23527c;
+        }
+
+        .logged-in-user {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        /* New page-specific styling */
+        .page-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .page-content {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+            text-align: left;
+        }
+
+        .back-btn {
+            margin-top: 20px;
+            background-color: #337ab7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .back-btn:hover {
+            background-color: #23527c;
         }
     </style>
 </head>
@@ -156,10 +185,11 @@
     <div class="dashboard">
         <h2>Dashboard</h2>
         <ul class="todo-nav">
-            <li class="nav-item all-task"><a class="nav-link active">All Tasks</a></li>
-            <li class="nav-item active-task"><a class="nav-link">Active Tasks</a></li>
-            <li class="nav-item completed-task"><a class="nav-link">Completed Tasks</a></li>
+            <li class="nav-item all-task"><span class="nav-link active">All Tasks</span></li>
+            <li class="nav-item active-task"><span class="nav-link">Active Tasks</span></li>
+            <li class="nav-item completed-task"><span class="nav-link">Completed Tasks</span></li>
         </ul>
+        <div class="logged-in-user" id="loggedInUser" style="display: none;"></div> <!-- Display user name here -->
     </div>
 
     <div class="main-content">
@@ -181,149 +211,167 @@
         <button class="todo-list-link">To-Do List</button>
     </div>
 
+    <!-- Home Page -->
     <div class="home-page">
         <h2>Welcome to Home Page</h2>
-        <button class="back-btn">Back</button>
         <div>
-            <p>Log In</p>
-            <p>Tech Updates</p>
-            <p>What’s New</p>
+            <button class="login-btn">Log In</button>
+            <button class="tech-updates-btn">Tech Updates</button>
+            <button class="whats-new-btn">What’s New</button>
+            <button class="profile-btn">Profile</button>
+            <button class="settings-btn">Settings</button>
+            <button class="backup-btn">Backup & Restore</button>
+            <button class="support-btn">Help & Support</button>
         </div>
+        <button class="back-btn">Back</button>
     </div>
 
-    <div id="schedule-dialog" title="Schedule Task" style="display:none;">
-        <input type="text" id="datepicker" placeholder="Select date">
+    <!-- What's New Page -->
+    <div class="whats-new-page">
+        <h2 class="page-header">What's New</h2>
+        <div class="page-content">
+            <ul>
+                <li>New UI with more features.</li>
+                <li>Improved task management system.</li>
+                <li>Login functionality added.</li>
+                <li>Tech updates section for the latest news in the tech world.</li>
+            </ul>
+        </div>
+        <button class="back-btn">Back to Home</button>
+    </div>
+
+    <!-- Tech Updates Page -->
+    <div class="tech-updates-page">
+        <h2 class="page-header">Tech Updates</h2>
+        <div class="page-content">
+            <p>Latest Tech News:</p>
+            <ul>
+                <li>AI continues to revolutionize industries across the globe.</li>
+                <li>A new smartphone with a 3D holographic display has been released.</li>
+                <li>Quantum computing breakthroughs are making headlines.</li>
+            </ul>
+        </div>
+        <button class="back-btn">Back to Home</button>
+    </div>
+
+    <!-- Profile Page -->
+    <div class="profile-page">
+        <h2 class="page-header">Profile</h2>
+        <div class="page-content">
+            <p id="profileUsername">Username: Not logged in</p>
+            <p>Role: Admin</p>
+        </div>
+        <button class="back-btn">Back to Home</button>
+    </div>
+
+    <!-- Settings Page -->
+    <div class="settings-page">
+        <h2 class="page-header">Settings</h2>
+        <div class="page-content">
+            <ul>
+                <li>Change Theme (Feature not implemented)</li>
+                <li>Notification Preferences (Feature not implemented)</li>
+                <li>Privacy Settings (Feature not implemented)</li>
+            </ul>
+        </div>
+        <button class="back-btn">Back to Home</button>
+    </div>
+
+    <!-- Log In Page -->
+    <div class="login-page">
+        <h2 class="page-header">Log In</h2>
+        <div class="page-content">
+            <p>Enter your username:</p>
+            <input type="text" id="usernameInput" placeholder="Username">
+            <br><br>
+            <button class="submit-login-btn">Log In</button>
+        </div>
+        <button class="back-btn">Back to Home</button>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $(document).ready(function() {
-            const addTaskInput = $('.card .add-task');
-            const todoList = $('.todo-list');
-            const allNav = $('.all-task');
-            const activeNav = $('.active-task');
-            const completedNav = $('.completed-task');
-            const noTasksMessage = $('#no-tasks');
-            const homePage = $('.home-page');
+            let loggedInUser = '';
 
-            function checkNoTasks() {
-                const tasks = todoList.find('.todo-item');
-                noTasksMessage.toggle(tasks.length === 0);
+            // Show or hide pages based on navigation
+            function showPage(page) {
+                $('.home-page, .whats-new-page, .tech-updates-page, .profile-page, .settings-page, .login-page').hide();
+                $(`.${page}`).show();
             }
 
-            function createTaskElement(taskText) {
-                const listItem = $('<div class="todo-item"></div>');
-                const checkbox = $('<input type="checkbox">');
-                const span = $('<span></span>').text(taskText);
-                const dropdown = $('<div class="dropdown"></div>');
-                const dropdownContent = $('<div class="dropdown-content"></div>');
-                const deleteButton = $('<a href="#">Delete</a>');
-                const renameButton = $('<a href="#">Rename</a>');
-                const scheduleButton = $('<a href="#">Schedule</a>');
-                const descheduleButton = $('<a href="#">Deschedule</a>');
+            // Show home page by default
+            showPage('home-page');
 
-                checkbox.on('click', function() {
-                    listItem.toggleClass('complete', checkbox.is(':checked'));
-                    checkNoTasks();
-                });
+            $('.home-link').click(function() {
+                showPage('home-page');
+            });
 
-                deleteButton.on('click', function() {
-                    listItem.remove();
-                    checkNoTasks();
-                });
+            $('.todo-list-link').click(function() {
+                showPage('main-content');
+            });
 
-                renameButton.on('click', function() {
-                    const newTaskName = prompt("Enter new task name:", span.text());
-                    if (newTaskName) {
-                        span.text(newTaskName);
-                    }
-                });
+            $('.login-btn').click(function() {
+                showPage('login-page');
+            });
 
-                scheduleButton.on('click', function() {
-                    const scheduleDialog = $("#schedule-dialog");
-                    scheduleDialog.dialog({
-                        modal: true,
-                        buttons: {
-                            "Schedule": function() {
-                                const selectedDate = $("#datepicker").val();
-                                if (selectedDate) {
-                                    alert(`Task scheduled for ${selectedDate}`);
-                                    $(this).dialog("close");
-                                } else {
-                                    alert("Please select a date.");
-                                }
-                            },
-                            "Cancel": function() {
-                                $(this).dialog("close");
-                            }
-                        }
-                    });
-                    $("#datepicker").datepicker();
-                });
-
-                descheduleButton.on('click', function() {
-                    alert("Task descheduled.");
-                });
-
-                dropdown.append('<button class="dropbtn">⋮</button>');
-                dropdownContent.append(renameButton, scheduleButton, descheduleButton, deleteButton);
-                dropdown.append(dropdownContent);
-                dropdown.on('click', function(event) {
-                    event.stopPropagation();
-                    dropdownContent.toggle();
-                });
-
-                $(document).on('click', function() {
-                    dropdownContent.hide();
-                });
-
-                listItem.append(checkbox, span, dropdown);
-                return listItem;
-            }
-
-            $('.add-btn').on('click', function() {
-                const taskText = addTaskInput.val().trim();
-                if (taskText) {
-                    const taskElement = createTaskElement(taskText);
-                    todoList.append(taskElement);
-                    addTaskInput.val('');
-                    checkNoTasks();
+            $('.submit-login-btn').click(function() {
+                loggedInUser = $('#usernameInput').val();
+                if (loggedInUser) {
+                    $('#loggedInUser').text(`Logged in as: ${loggedInUser}`).show();
+                    $('#profileUsername').text(`Username: ${loggedInUser}`);
+                    showPage('home-page');
+                } else {
+                    alert('Please enter a username.');
                 }
             });
 
-            allNav.on('click', function() {
-                $('.nav-link').removeClass('active');
-                $(this).find('.nav-link').addClass('active');
-                todoList.show();
+            $('.tech-updates-btn').click(function() {
+                showPage('tech-updates-page');
             });
 
-            activeNav.on('click', function() {
-                $('.nav-link').removeClass('active');
-                $(this).find('.nav-link').addClass('active');
-                todoList.children('.todo-item').show().filter('.complete').hide();
+            $('.whats-new-btn').click(function() {
+                showPage('whats-new-page');
             });
 
-            completedNav.on('click', function() {
-                $('.nav-link').removeClass('active');
-                $(this).find('.nav-link').addClass('active');
-                todoList.children('.todo-item').hide().filter('.complete').show();
+            $('.profile-btn').click(function() {
+                showPage('profile-page');
             });
 
-            $('.home-link').on('click', function() {
-                $('.dashboard').hide(); // Remove dashboard on home page
-                $('.main-content').hide();
-                homePage.show();
+            $('.settings-btn').click(function() {
+                showPage('settings-page');
             });
 
-            $('.todo-list-link').on('click', function() {
-                $('.dashboard').show(); // Show dashboard
-                $('.main-content').show();
-                homePage.hide();
+            $('.back-btn').click(function() {
+                showPage('home-page');
             });
 
-            // Initialize datepicker
-            $("#datepicker").datepicker();
+            // Task management
+            const taskInput = $('.add-task');
+            const addTaskBtn = $('.add-btn');
+            const todoList = $('.todo-list');
+            const noTasksMessage = $('#no-tasks');
+
+            function updateTaskDisplay() {
+                if (todoList.children().length === 0) {
+                    noTasksMessage.show();
+                } else {
+                    noTasksMessage.hide();
+                }
+            }
+
+            addTaskBtn.click(function() {
+                const taskText = taskInput.val();
+                if (taskText) {
+                    const taskItem = $('<div class="todo-item"></div>').text(taskText);
+                    todoList.append(taskItem);
+                    taskInput.val('');
+                    updateTaskDisplay();
+                }
+            });
+
+            // Initial state
+            updateTaskDisplay();
         });
     </script>
 </body>
