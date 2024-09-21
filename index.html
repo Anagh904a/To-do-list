@@ -6,127 +6,167 @@
     <title>ListVista by Anagh</title>
     <style>
         body {
-            margin-top: 20px;
-            background: #f8f8f8;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
+        .dashboard {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .todo-nav {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .nav-item {
+            margin-right: 20px;
+        }
+
+        .nav-link {
+            color: #337ab7;
+            text-decoration: none;
+        }
+
+        .nav-link.active {
+            color: #23527c;
+            font-weight: bold;
+        }
+
+        .main-content {
+            padding: 20px;
         }
 
         .card {
-            padding: 25px;
-            margin-bottom: 20px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 1px 15px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.04);
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            color: #333;
-            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .add-task {
-            width: 80%;
+            width: 100%;
             padding: 10px;
-            margin: 10px 0;
-            font-size: 1rem;
-            border-radius: 5px;
-            border: 1px solid #ddd;
+            font-size: 16px;
+            border: 1px solid #ccc;
         }
 
         .add-btn {
+            background-color: #337ab7;
+            color: #fff;
             padding: 10px 20px;
-            font-size: 1rem;
-            background-color: #007bff;
-            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
 
         .add-btn:hover {
-            background-color: #0056b3;
-        }
-
-        .todo-nav {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-
-        .nav-item .nav-link {
-            color: #007bff;
-            cursor: pointer;
-            padding: 10px;
-            text-decoration: none;
-            font-size: 1rem;
-            border-bottom: 2px solid transparent;
-        }
-
-        .nav-item .nav-link.active {
-            border-bottom: 2px solid #007bff;
+            background-color: #23527c;
         }
 
         .todo-list {
-            margin: 20px 0;
-        }
-
-        .todo-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background: #f7f7f7;
-            margin: 5px 0;
-            border-radius: 5px;
-        }
-
-        .todo-item.complete span {
-            text-decoration: line-through;
-            color: #888;
-        }
-
-        .remove-todo-item {
-            color: #ccc;
-            cursor: pointer;
-        }
-
-        .remove-todo-item:hover {
-            color: #ff0000;
-        }
-
-        #no-tasks {
-            color: lightgray;
-            font-style: italic;
-            display: none;
             margin-top: 20px;
         }
 
-        .only-active .todo-item.complete,
-        .only-complete .todo-item:not(.complete) {
+        .todo-item {
+            background-color: #fff;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .todo-item.complete {
+            background-color: #f0f0f0;
+            text-decoration: line-through;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ddd;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #337ab7;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        #no-tasks {
+            display: none;
+            padding: 20px;
+            text-align: center;
+            color: #ccc;
+        }
+
+        .footer {
+            background-color: #f0f0f0;
+            padding: 10px;
+            text-align: center;
+            border-top: 1px solid #ccc;
+        }
+
+        .home-link, .todo-list-link {
+            background-color: #337ab7;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .home-link:hover, .todo-list-link:hover {
+            background-color: #23527c;
+        }
+
+        .home-page {
+            display: none;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #schedule-dialog {
             display: none;
         }
     </style>
 </head>
 <body>
+    <div class="dashboard">
+        <h2>Dashboard</h2>
+        <ul class="todo-nav">
+            <li class="nav-item all-task"><a class="nav-link active">All Tasks</a></li>
+            <li class="nav-item active-task"><a class="nav-link">Active Tasks</a></li>
+            <li class="nav-item completed-task"><a class="nav-link">Completed Tasks</a></li>
+        </ul>
+    </div>
 
-    <div class="container">
+    <div class="main-content">
         <h1>ListVista by Anagh</h1>
         <div class="card">
             <input type="text" class="add-task" placeholder="New Task...">
             <button class="add-btn">Add Task</button>
-            
-            <ul class="todo-nav">
-                <li class="nav-item all-task"><a class="nav-link active">All Tasks</a></li>
-                <li class="nav-item active-task"><a class="nav-link">Active Tasks</a></li>
-                <li class="nav-item completed-task"><a class="nav-link">Completed Tasks</a></li>
-            </ul>
 
             <div class="todo-list">
                 <!-- Tasks will appear here -->
@@ -136,15 +176,36 @@
         </div>
     </div>
 
+    <div class="footer">
+        <button class="home-link">Home Page</button>
+        <button class="todo-list-link">To-Do List</button>
+    </div>
+
+    <div class="home-page">
+        <h2>Welcome to Home Page</h2>
+        <button class="back-btn">Back</button>
+        <div>
+            <p>Log In</p>
+            <p>Tech Updates</p>
+            <p>What’s New</p>
+        </div>
+    </div>
+
+    <div id="schedule-dialog" title="Schedule Task" style="display:none;">
+        <input type="text" id="datepicker" placeholder="Select date">
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $(document).ready(function() {
-            const addTaskInput = $('.add-task');
+            const addTaskInput = $('.card .add-task');
             const todoList = $('.todo-list');
             const allNav = $('.all-task');
             const activeNav = $('.active-task');
             const completedNav = $('.completed-task');
             const noTasksMessage = $('#no-tasks');
+            const homePage = $('.home-page');
 
             function checkNoTasks() {
                 const tasks = todoList.find('.todo-item');
@@ -155,7 +216,12 @@
                 const listItem = $('<div class="todo-item"></div>');
                 const checkbox = $('<input type="checkbox">');
                 const span = $('<span></span>').text(taskText);
-                const deleteButton = $('<span class="remove-todo-item">Delete</span>');
+                const dropdown = $('<div class="dropdown"></div>');
+                const dropdownContent = $('<div class="dropdown-content"></div>');
+                const deleteButton = $('<a href="#">Delete</a>');
+                const renameButton = $('<a href="#">Rename</a>');
+                const scheduleButton = $('<a href="#">Schedule</a>');
+                const descheduleButton = $('<a href="#">Deschedule</a>');
 
                 checkbox.on('click', function() {
                     listItem.toggleClass('complete', checkbox.is(':checked'));
@@ -167,49 +233,97 @@
                     checkNoTasks();
                 });
 
-                listItem.append(checkbox).append(span).append(deleteButton);
+                renameButton.on('click', function() {
+                    const newTaskName = prompt("Enter new task name:", span.text());
+                    if (newTaskName) {
+                        span.text(newTaskName);
+                    }
+                });
+
+                scheduleButton.on('click', function() {
+                    const scheduleDialog = $("#schedule-dialog");
+                    scheduleDialog.dialog({
+                        modal: true,
+                        buttons: {
+                            "Schedule": function() {
+                                const selectedDate = $("#datepicker").val();
+                                if (selectedDate) {
+                                    alert(`Task scheduled for ${selectedDate}`);
+                                    $(this).dialog("close");
+                                } else {
+                                    alert("Please select a date.");
+                                }
+                            },
+                            "Cancel": function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                    $("#datepicker").datepicker();
+                });
+
+                descheduleButton.on('click', function() {
+                    alert("Task descheduled.");
+                });
+
+                dropdown.append('<button class="dropbtn">⋮</button>');
+                dropdownContent.append(renameButton, scheduleButton, descheduleButton, deleteButton);
+                dropdown.append(dropdownContent);
+                dropdown.on('click', function(event) {
+                    event.stopPropagation();
+                    dropdownContent.toggle();
+                });
+
+                $(document).on('click', function() {
+                    dropdownContent.hide();
+                });
+
+                listItem.append(checkbox, span, dropdown);
                 return listItem;
             }
 
-            function addTask() {
+            $('.add-btn').on('click', function() {
                 const taskText = addTaskInput.val().trim();
-                if (taskText === '') return;
-
-                const newTaskElement = createTaskElement(taskText);
-                todoList.append(newTaskElement);
-                addTaskInput.val('');
-                checkNoTasks();
-            }
-
-            $('.add-btn').on('click', addTask);
-            addTaskInput.on('keypress', function(e) {
-                if (e.key === 'Enter') addTask();
+                if (taskText) {
+                    const taskElement = createTaskElement(taskText);
+                    todoList.append(taskElement);
+                    addTaskInput.val('');
+                    checkNoTasks();
+                }
             });
 
-            function setActiveNav(navItem) {
-                $('.nav-link').removeClass('active');
-                navItem.find('.nav-link').addClass('active');
-
-                const isActive = navItem.hasClass('active-task');
-                const isCompleted = navItem.hasClass('completed-task');
-
-                todoList.toggleClass('only-active', isActive);
-                todoList.toggleClass('only-complete', isCompleted);
-            }
-
             allNav.on('click', function() {
-                setActiveNav(allNav);
+                $('.nav-link').removeClass('active');
+                $(this).find('.nav-link').addClass('active');
+                todoList.show();
             });
 
             activeNav.on('click', function() {
-                setActiveNav(activeNav);
+                $('.nav-link').removeClass('active');
+                $(this).find('.nav-link').addClass('active');
+                todoList.children('.todo-item').show().filter('.complete').hide();
             });
 
             completedNav.on('click', function() {
-                setActiveNav(completedNav);
+                $('.nav-link').removeClass('active');
+                $(this).find('.nav-link').addClass('active');
+                todoList.children('.todo-item').hide().filter('.complete').show();
             });
 
-            checkNoTasks();
+            $('.home-link').on('click', function() {
+                $('.dashboard').hide(); // Remove dashboard on home page
+                $('.main-content').hide();
+                homePage.show();
+            });
+
+            $('.todo-list-link').on('click', function() {
+                $('.dashboard').show(); // Show dashboard
+                $('.main-content').show();
+                homePage.hide();
+            });
+
+            // Initialize datepicker
+            $("#datepicker").datepicker();
         });
     </script>
 </body>
