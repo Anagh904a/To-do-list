@@ -1,378 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ListVista by Anagh</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-        }
+  <meta charset="UTF-8">
+  <title>School Tools Platform</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      background-color: #f9fafb;
+    }
 
-        .dashboard {
-            background-color: #f0f0f0;
-            padding: 20px;
-            border-bottom: 1px solid #ccc;
-        }
+    /* Sidebar Styles */
+    .sidebar {
+      width: 250px;
+      background-color: #007BFF;
+      color: white;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      padding-top: 20px;
+    }
 
-        .todo-nav {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: space-between;
-        }
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-        .nav-item {
-            margin-right: 20px;
-        }
+    .sidebar a {
+      display: block;
+      color: white;
+      padding: 15px 20px;
+      text-decoration: none;
+      margin-bottom: 5px;
+      transition: background 0.3s;
+    }
 
-        .nav-link {
-            color: #337ab7;
-            text-decoration: none;
-            cursor: pointer;
-        }
+    .sidebar a:hover {
+      background-color: #0056b3;
+    }
 
-        .nav-link.active {
-            color: #23527c;
-            font-weight: bold;
-        }
+    /* Main Content Styles */
+    .main-content {
+      margin-left: 250px;
+      padding: 40px;
+      flex-grow: 1;
+    }
 
-        .main-content {
-            padding: 20px;
-        }
+    /* Task Manager Styles */
+    .task-manager {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-        .card {
-            background-color: #fff;
-            padding: 20px;
-            border: 1px solid #ddd;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    .task-form {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
 
-        .add-task {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-        }
+    .task-form input, .task-form select {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-right: 10px;
+      flex: 1;
+    }
 
-        .add-btn {
-            background-color: #337ab7;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+    .task-form button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
-        .add-btn:hover {
-            background-color: #23527c;
-        }
+    .task-form button:hover {
+      background-color: #218838;
+    }
 
-        .todo-list {
-            margin-top: 20px;
-        }
+    .task-list {
+      list-style: none;
+      padding: 0;
+    }
 
-        .todo-item {
-            background-color: #fff;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
+    .task-item {
+      background-color: #f9f9f9;
+      padding: 15px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .todo-item.complete {
-            background-color: #f0f0f0;
-            text-decoration: line-through;
-        }
+    .task-item.completed {
+      text-decoration: line-through;
+      background-color: #d4edda;
+    }
 
-        #no-tasks {
-            display: none;
-            padding: 20px;
-            text-align: center;
-            color: #ccc;
-        }
+    .task-item button {
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
 
-        .footer {
-            background-color: #f0f0f0;
-            padding: 10px;
-            text-align: center;
-            border-top: 1px solid #ccc;
-        }
+    .complete-btn {
+      background-color: #007bff;
+      color: white;
+    }
 
-        .home-link, .todo-list-link {
-            background-color: #337ab7;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+    }
 
-        .home-link:hover, .todo-list-link:hover {
-            background-color: #23527c;
-        }
+    .filter-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
 
-        .home-page, .whats-new-page, .tech-updates-page, .profile-page, .settings-page, .login-page {
-            display: none;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .home-page h2 {
-            color: #343a40;
-            margin-bottom: 20px;
-        }
-
-        .home-page button {
-            background-color: #337ab7;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s;
-        }
-
-        .home-page button:hover {
-            background-color: #23527c;
-        }
-
-        .logged-in-user {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            margin-top: 10px;
-        }
-
-        /* New page-specific styling */
-        .page-header {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .page-content {
-            font-size: 18px;
-            line-height: 1.6;
-            color: #555;
-            text-align: left;
-        }
-
-        .back-btn {
-            margin-top: 20px;
-            background-color: #337ab7;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .back-btn:hover {
-            background-color: #23527c;
-        }
-    </style>
+    .filter-bar select {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
-    <div class="dashboard">
-        <h2>Dashboard</h2>
-        <ul class="todo-nav">
-            <li class="nav-item all-task"><span class="nav-link active">All Tasks</span></li>
-            <li class="nav-item active-task"><span class="nav-link">Active Tasks</span></li>
-            <li class="nav-item completed-task"><span class="nav-link">Completed Tasks</span></li>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Dashboard</h2>
+    <a href="#" onclick="showSection('task-manager')">Task Manager</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+
+    <!-- Task Manager Feature -->
+    <div id="task-manager" class="feature-section">
+      <h2>Task Manager</h2>
+      <div class="task-manager">
+        <h1>Task Manager</h1>
+        <!-- Task Form -->
+        <div class="task-form">
+          <input type="text" id="taskName" placeholder="Task Name" required>
+          <input type="text" id="taskDesc" placeholder="Task Description">
+          <select id="taskPriority">
+            <option value="low">Low Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="high">High Priority</option>
+          </select>
+          <button onclick="addTask()">Add Task</button>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <select id="filterStatus" onchange="filterTasks()">
+            <option value="all">All Tasks</option>
+            <option value="completed">Completed Tasks</option>
+            <option value="incomplete">Incomplete Tasks</option>
+          </select>
+          <select id="filterPriority" onchange="filterTasks()">
+            <option value="all">All Priorities</option>
+            <option value="low">Low Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="high">High Priority</option>
+          </select>
+        </div>
+
+        <!-- Task List -->
+        <ul id="taskList" class="task-list">
+          <!-- Task Items will appear here -->
         </ul>
-        <div class="logged-in-user" id="loggedInUser" style="display: none;"></div> <!-- Display user name here -->
+      </div>
     </div>
 
-    <div class="main-content">
-        <h1>ListVista by Anagh</h1>
-        <div class="card">
-            <input type="text" class="add-task" placeholder="New Task...">
-            <button class="add-btn">Add Task</button>
+  </div>
 
-            <div class="todo-list">
-                <!-- Tasks will appear here -->
-            </div>
+  <script>
+    let tasks = [];
 
-            <div id="no-tasks">No tasks added</div>
-        </div>
-    </div>
+    // Add Task Function
+    function addTask() {
+      const name = document.getElementById('taskName').value;
+      const desc = document.getElementById('taskDesc').value;
+      const priority = document.getElementById('taskPriority').value;
+      const task = { name, desc, priority, completed: false };
+      tasks.push(task);
+      document.getElementById('taskName').value = '';
+      document.getElementById('taskDesc').value = '';
+      renderTasks();
+    }
 
-    <div class="footer">
-        <button class="home-link">Home Page</button>
-        <button class="todo-list-link">To-Do List</button>
-    </div>
+    // Complete Task Function
+    function completeTask(index) {
+      tasks[index].completed = !tasks[index].completed;
+      renderTasks();
+    }
 
-    <!-- Home Page -->
-    <div class="home-page">
-        <h2>Welcome to Home Page</h2>
-        <div>
-            <button class="login-btn">Log In</button>
-            <button class="tech-updates-btn">Tech Updates</button>
-            <button class="whats-new-btn">What’s New</button>
-            <button class="profile-btn">Profile</button>
-            <button class="settings-btn">Settings</button>
-            <button class="backup-btn">Backup & Restore</button>
-            <button class="support-btn">Help & Support</button>
-        </div>
-        <button class="back-btn">Back</button>
-    </div>
+    // Delete Task Function
+    function deleteTask(index) {
+      tasks.splice(index, 1);
+      renderTasks();
+    }
 
-    <!-- What's New Page -->
-    <div class="whats-new-page">
-        <h2 class="page-header">What's New</h2>
-        <div class="page-content">
-            <ul>
-                <li>New UI with more features.</li>
-                <li>Improved task management system.</li>
-                <li>Login functionality added.</li>
-                <li>Tech updates section for the latest news in the tech world.</li>
-            </ul>
-        </div>
-        <button class="back-btn">Back to Home</button>
-    </div>
+    // Filter Tasks Function
+    function filterTasks() {
+      const statusFilter = document.getElementById('filterStatus').value;
+      const priorityFilter = document.getElementById('filterPriority').value;
+      renderTasks(statusFilter, priorityFilter);
+    }
 
-    <!-- Tech Updates Page -->
-    <div class="tech-updates-page">
-        <h2 class="page-header">Tech Updates</h2>
-        <div class="page-content">
-            <p>Latest Tech News:</p>
-            <ul>
-                <li>AI continues to revolutionize industries across the globe.</li>
-                <li>A new smartphone with a 3D holographic display has been released.</li>
-                <li>Quantum computing breakthroughs are making headlines.</li>
-            </ul>
-        </div>
-        <button class="back-btn">Back to Home</button>
-    </div>
+    // Render Tasks Function
+    function renderTasks(statusFilter = 'all', priorityFilter = 'all') {
+      const taskList = document.getElementById('taskList');
+      taskList.innerHTML = '';
 
-    <!-- Profile Page -->
-    <div class="profile-page">
-        <h2 class="page-header">Profile</h2>
-        <div class="page-content">
-            <p id="profileUsername">Username: Not logged in</p>
-            <p>Role: Admin</p>
-        </div>
-        <button class="back-btn">Back to Home</button>
-    </div>
+      tasks.forEach((task, index) => {
+        if ((statusFilter === 'completed' && !task.completed) ||
+            (statusFilter === 'incomplete' && task.completed) ||
+            (priorityFilter !== 'all' && task.priority !== priorityFilter)) {
+          return;
+        }
 
-    <!-- Settings Page -->
-    <div class="settings-page">
-        <h2 class="page-header">Settings</h2>
-        <div class="page-content">
-            <ul>
-                <li>Change Theme (Feature not implemented)</li>
-                <li>Notification Preferences (Feature not implemented)</li>
-                <li>Privacy Settings (Feature not implemented)</li>
-            </ul>
-        </div>
-        <button class="back-btn">Back to Home</button>
-    </div>
+        const listItem = document.createElement('li');
+        listItem.className = `task-item ${task.completed ? 'completed' : ''}`;
+        listItem.innerHTML = `
+          <span>${task.name} (${task.priority})</span>
+          <div>
+            <button class="complete-btn" onclick="completeTask(${index})">${task.completed ? 'Undo' : 'Complete'}</button>
+            <button class="delete-btn" onclick="deleteTask(${index})">Delete</button>
+          </div>
+        `;
+        taskList.appendChild(listItem);
+      });
+    }
 
-    <!-- Log In Page -->
-    <div class="login-page">
-        <h2 class="page-header">Log In</h2>
-        <div class="page-content">
-            <p>Enter your username:</p>
-            <input type="text" id="usernameInput" placeholder="Username">
-            <br><br>
-            <button class="submit-login-btn">Log In</button>
-        </div>
-        <button class="back-btn">Back to Home</button>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            let loggedInUser = '';
-
-            // Show or hide pages based on navigation
-            function showPage(page) {
-                $('.home-page, .whats-new-page, .tech-updates-page, .profile-page, .settings-page, .login-page').hide();
-                $(`.${page}`).show();
-            }
-
-            // Show home page by default
-            showPage('home-page');
-
-            $('.home-link').click(function() {
-                showPage('home-page');
-            });
-
-            $('.todo-list-link').click(function() {
-                showPage('main-content');
-            });
-
-            $('.login-btn').click(function() {
-                showPage('login-page');
-            });
-
-            $('.submit-login-btn').click(function() {
-                loggedInUser = $('#usernameInput').val();
-                if (loggedInUser) {
-                    $('#loggedInUser').text(`Logged in as: ${loggedInUser}`).show();
-                    $('#profileUsername').text(`Username: ${loggedInUser}`);
-                    showPage('home-page');
-                } else {
-                    alert('Please enter a username.');
-                }
-            });
-
-            $('.tech-updates-btn').click(function() {
-                showPage('tech-updates-page');
-            });
-
-            $('.whats-new-btn').click(function() {
-                showPage('whats-new-page');
-            });
-
-            $('.profile-btn').click(function() {
-                showPage('profile-page');
-            });
-
-            $('.settings-btn').click(function() {
-                showPage('settings-page');
-            });
-
-            $('.back-btn').click(function() {
-                showPage('home-page');
-            });
-
-            // Task management
-            const taskInput = $('.add-task');
-            const addTaskBtn = $('.add-btn');
-            const todoList = $('.todo-list');
-            const noTasksMessage = $('#no-tasks');
-
-            function updateTaskDisplay() {
-                if (todoList.children().length === 0) {
-                    noTasksMessage.show();
-                } else {
-                    noTasksMessage.hide();
-                }
-            }
-
-            addTaskBtn.click(function() {
-                const taskText = taskInput.val();
-                if (taskText) {
-                    const taskItem = $('<div class="todo-item"></div>').text(taskText);
-                    todoList.append(taskItem);
-                    taskInput.val('');
-                    updateTaskDisplay();
-                }
-            });
-
-            // Initial state
-            updateTaskDisplay();
-        });
-    </script>
+    // Initial Render
+    renderTasks();
+  </script>
 </body>
 </html>
