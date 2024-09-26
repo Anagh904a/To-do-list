@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>School Tools Platform</title>
   <style>
     /* General Styles */
@@ -136,6 +137,34 @@
       border: 1px solid #ddd;
       border-radius: 4px;
     }
+
+    /* Worksheet, Quiz Generator, and Tech Updates Styles */
+    .feature-section {
+      display: none;
+      margin-top: 50px;
+    }
+
+    .feature-section form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .feature-section form input, .feature-section form select, .feature-section form button {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .feature-section form button {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+
+    .feature-section form button:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
@@ -144,6 +173,13 @@
   <div class="sidebar">
     <h2>Dashboard</h2>
     <a href="#" onclick="showSection('task-manager')">Task Manager</a>
+    <a href="#" onclick="showFutureFeature()">Backup & Restore</a>
+    <a href="#" onclick="showFutureFeature()">Themes</a>
+    <a href="#" onclick="showFutureFeature()">Notes</a>
+    <a href="#" onclick="showFutureFeature()">Shared Tasks</a>
+    <a href="#" onclick="showSection('worksheet-generator')">Worksheet Generator</a>
+    <a href="#" onclick="showSection('quiz-generator')">Quiz Generator</a>
+    <a href="#" onclick="showSection('tech-updates')">Tech Updates</a>
   </div>
 
   <!-- Main Content -->
@@ -188,69 +224,187 @@
       </div>
     </div>
 
+    <!-- Worksheet Generator Section -->
+    <div id="worksheet-generator" class="feature-section">
+      <h1>Worksheet Generator</h1>
+      <p>Select a subject and generate your worksheet:</p>
+      
+      <form id="worksheetForm">
+        <label for="subject">Choose Subject:</label>
+        <select id="subject" name="subject">
+          <option value="math">Math</option>
+          <option value="science">Science</option>
+        </select>
+        
+        <label for="numQuestions">Number of Questions:</label>
+        <input type="number" id="numQuestions" name="numQuestions" min="5" max="50">
+        
+        <label for="difficulty">Difficulty Level:</label>
+        <select id="difficulty" name="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+
+        <label for="questionType">Question Type:</label>
+        <select id="questionType" name="questionType">
+          <option value="mcq">Multiple Choice</option>
+          <option value="shortAnswer">Short Answer</option>
+          <option value="longAnswer">Long Answer</option>
+        </select>
+        
+        <button type="button" onclick="generateWorksheet()">Generate Worksheet</button>
+      </form>
+
+      <div id="generatedWorksheet"></div>
+    </div>
+
+    <!-- Quiz Generator Section -->
+    <div id="quiz-generator" class="feature-section">
+      <h1>Quiz Generator</h1>
+      <p>Select a subject and take a quiz:</p>
+      
+      <form id="quizForm">
+        <label for="quizSubject">Choose Subject:</label>
+        <select id="quizSubject" name="quizSubject">
+          <option value="math">Math</option>
+          <option value="science">Science</option>
+        </select>
+        
+        <label for="quizNumQuestions">Number of Questions:</label>
+        <input type="number" id="quizNumQuestions" name="quizNumQuestions" min="5" max="20">
+
+        <button type="button" onclick="startQuiz()">Start Quiz</button>
+      </form>
+
+      <div id="quizArea"></div>
+    </div>
+
+    <!-- Tech Updates Section -->
+    <div id="tech-updates" class="feature-section">
+      <h1>Tech Updates</h1>
+      <button onclick="showUpdate()">Check for Updates</button>
+      <div id="updateMessage"></div>
+    </div>
+
   </div>
 
   <script>
-    let tasks = [];
-
-    // Add Task Function
-    function addTask() {
-      const name = document.getElementById('taskName').value;
-      const desc = document.getElementById('taskDesc').value;
-      const priority = document.getElementById('taskPriority').value;
-      const task = { name, desc, priority, completed: false };
-      tasks.push(task);
-      document.getElementById('taskName').value = '';
-      document.getElementById('taskDesc').value = '';
-      renderTasks();
+    // Utility Function to Show Sections
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll('.feature-section');
+      sections.forEach(section => section.style.display = 'none');
+      document.getElementById(sectionId).style.display = 'block';
     }
 
-    // Complete Task Function
-    function completeTask(index) {
+    function showFutureFeature() {
+      alert("This feature will be implemented in future updates.");
+    }
+
+    // Task Manager Functions
+    let tasks = [];
+
+    function addTask() {
+      const taskName = document.getElementById('taskName').value;
+      const taskDesc = document.getElementById('taskDesc').value;
+      const taskPriority = document.getElementById('taskPriority').value;
+
+      if (taskName) {
+        const task = {
+          name: taskName,
+          desc: taskDesc,
+          priority: taskPriority,
+          completed: false
+        };
+        tasks.push(task);
+        renderTasks();
+        document.getElementById('taskName').value = '';
+        document.getElementById('taskDesc').value = '';
+      }
+    }
+
+    function renderTasks() {
+      const taskList = document.getElementById('taskList');
+      taskList.innerHTML = '';
+
+      const filterStatus = document.getElementById('filterStatus').value;
+      const filterPriority = document.getElementById('filterPriority').value;
+
+      const filteredTasks = tasks.filter(task => {
+        const statusMatch = filterStatus === 'all' || (filterStatus === 'completed' && task.completed) || (filterStatus === 'incomplete' && !task.completed);
+        const priorityMatch = filterPriority === 'all' || task.priority === filterPriority;
+        return statusMatch && priorityMatch;
+      });
+
+      filteredTasks.forEach((task, index) => {
+        const taskItem = document.createElement('li');
+        taskItem.classList.add('task-item');
+        if (task.completed) {
+          taskItem.classList.add('completed');
+        }
+        taskItem.innerHTML = `
+          <div>
+            <strong>${task.name}</strong> - ${task.desc} - <em>${task.priority}</em>
+          </div>
+          <div>
+            <button class="complete-btn" onclick="toggleTaskComplete(${index})">Complete</button>
+            <button class="delete-btn" onclick="deleteTask(${index})">Delete</button>
+          </div>
+        `;
+        taskList.appendChild(taskItem);
+      });
+    }
+
+    function toggleTaskComplete(index) {
       tasks[index].completed = !tasks[index].completed;
       renderTasks();
     }
 
-    // Delete Task Function
     function deleteTask(index) {
       tasks.splice(index, 1);
       renderTasks();
     }
 
-    // Filter Tasks Function
     function filterTasks() {
-      const statusFilter = document.getElementById('filterStatus').value;
-      const priorityFilter = document.getElementById('filterPriority').value;
-      renderTasks(statusFilter, priorityFilter);
+      renderTasks();
     }
 
-    // Render Tasks Function
-    function renderTasks(statusFilter = 'all', priorityFilter = 'all') {
-      const taskList = document.getElementById('taskList');
-      taskList.innerHTML = '';
+    // Worksheet Generator Functions
+    function generateWorksheet() {
+      const subject = document.getElementById('subject').value;
+      const numQuestions = document.getElementById('numQuestions').value;
+      const difficulty = document.getElementById('difficulty').value;
+      const questionType = document.getElementById('questionType').value;
 
-      tasks.forEach((task, index) => {
-        if ((statusFilter === 'completed' && !task.completed) ||
-            (statusFilter === 'incomplete' && task.completed) ||
-            (priorityFilter !== 'all' && task.priority !== priorityFilter)) {
-          return;
-        }
+      const worksheet = `
+        <h3>Generated Worksheet for ${subject}</h3>
+        <p>${numQuestions} questions of ${difficulty} difficulty, ${questionType} type.</p>
+      `;
 
-        const listItem = document.createElement('li');
-        listItem.className = `task-item ${task.completed ? 'completed' : ''}`;
-        listItem.innerHTML = `
-          <span>${task.name} (${task.priority})</span>
-          <div>
-            <button class="complete-btn" onclick="completeTask(${index})">${task.completed ? 'Undo' : 'Complete'}</button>
-            <button class="delete-btn" onclick="deleteTask(${index})">Delete</button>
-          </div>
-        `;
-        taskList.appendChild(listItem);
-      });
+      document.getElementById('generatedWorksheet').innerHTML = worksheet;
     }
 
-    // Initial Render
-    renderTasks();
+    // Quiz Generator Functions
+    function startQuiz() {
+      const subject = document.getElementById('quizSubject').value;
+      const numQuestions = document.getElementById('quizNumQuestions').value;
+
+      const quiz = `
+        <h3>${numQuestions}-question Quiz on ${subject}</h3>
+      `;
+
+      document.getElementById('quizArea').innerHTML = quiz;
+    }
+
+    // Tech Updates Functions
+    function showUpdate() {
+      document.getElementById('updateMessage').innerHTML = "As a lazy dev I am working on it and I will share a new update soon!";
+    }
+
+    // Show Task Manager by Default
+    showSection('task-manager');
   </script>
+
 </body>
 </html>
+
