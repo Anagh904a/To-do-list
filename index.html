@@ -458,25 +458,7 @@
       }
 
       /* Target the button in the Tech Update section */
-.tech-update-btn {
-   display: flex
-    background-color: blue; /* Set the button color to blue */
-    color: white; /* Text color */
-    border-radius: 15px; /* Rounded corners */
-    padding: 10px 20px; /* Add some padding */
-    border: none; /* Remove border */
-    cursor: pointer; /* Show pointer cursor on hover */
-    font-size: 16px; /* Adjust font size */
-    transition: background-color 0.3s ease; /* Smooth transition for hover */
-}
-
-/* Add hover effect for the button */
-.tech-update-btn:hover {
-    background-color: darkblue; /* Darker shade of blue on hover */
-        }
-
-    
-  </style>
+</style>
 </head>
 <body>
 
@@ -495,10 +477,6 @@
   <div class="sidebar" id="sidebar">
     <h2>Dashboard</h2>
     <a href="#" onclick="showSection('task-manager')">Task Manager</a>
-    <a href="#" onclick="showFutureFeature()">Backup & Restore</a>
-    <a href="#" onclick="showFutureFeature()">Themes</a>
-    <a href="#" onclick="showFutureFeature()">Notes</a>
-    <a href="#" onclick="showFutureFeature()">Shared Tasks</a>
     <a href="#" onclick="showSection('worksheet-generator')">Worksheet Generator</a>
     <a href="#" onclick="showSection('quiz-generator')">Quiz Generator</a>
     <a href="#" onclick="showSection('tech-updates')">Tech Updates</a>
@@ -610,7 +588,9 @@
     <!-- Tech Updates Section -->
     <div id="tech-updates" class="feature-section">
       <h2>Tech Updates</h2>
-      <button onclick="showUpdate()">Check for Updates</button>
+      <button onclick="showUpdate()" style="background-color: blue; color: white; padding: 8px 16px; border: none; border-radius: 3px; cursor: pointer;">
+  Check for Updates
+</button>
       <div id="updateMessage"></div>
     </div>
 
